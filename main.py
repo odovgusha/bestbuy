@@ -16,47 +16,56 @@ def start(store_obj: store.Store):
                 product.show()
         elif choice == "2":
             print(f"Total items in store: {store_obj.get_total_quantity()}")
-        elif choice == "3":
-            shopping_list = []
-            active_products = store_obj.get_all_products()
 
-            print("\nAvailable products:")
-            for index, product in enumerate(active_products, start=1):
-                print(f"{index}. ", end="")
-                product.show()
+        elif choice == "3":
+            total_price = 0
 
             while True:
-                product_choice = int(input("\nChoose product number: "))
+                active_products = store_obj.get_all_products()
+                #print(active_products)
+                print("\nAvailable products:")
+                for index, product in enumerate(active_products, start=1):
+                    print(f"{index}. ", end="")
+                    product.show()
 
+                product_choice = int(input("\nChoose product number: "))
+                # print(product_choice)
                 if product_choice < 1 or product_choice > len(active_products):
                     print("Invalid number, try again.")
                     continue
 
                 chosen_product = active_products[product_choice - 1]
-
+                # print(chosen_product)
                 while True:
                     quantity = int(input("Quantity: "))
 
-                    # 🔥 NEW CHECK
                     if quantity > chosen_product.get_quantity():
-                        print("Sorry, not enough stock available!")
+                        print("Sorry, not enough stock!")
                         print(f"Available: {chosen_product.get_quantity()}")
                         continue
-                    else:
-                        break
+                    break
 
-                shopping_list.append((chosen_product, quantity))
-                print("The product is ordered!")
+
+                try:
+                    price = chosen_product.buy(quantity)
+                    total_price += price
+                    print(f"Added to cart: it costed {price}$")
+                    # print(price)
+                except ValueError as e:
+                    print("Error:", e)
+
                 another = input("Do you want to order another product? (y/n): ")
-
                 if another.lower() != "y":
                     break
 
-            try:
-                total = store_obj.order(shopping_list)
-                print(f"\nTotal order cost: ${total}")
-            except ValueError as e:
-                print("Error:", e)
+            print(f"\nTotal order cost: ${total_price}")
+
+        elif choice == "4":
+            print("Thank you for visiting!")
+            break
+
+        else:
+            print("Invalid choice. Try again.")
 
 
 if __name__ == "__main__":
