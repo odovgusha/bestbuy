@@ -50,7 +50,9 @@ class Product:
 # Test the class
 if __name__ == "__main__":
     bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+    bose = Product("Bose QuietComfort Earbuds", price=250, quantity=67)
     mac = Product("MacBook Air M2", price=1450, quantity=100)
+    mac = Product("MacBook Air M2", price=22, quantity=101110)
 
     print(bose.buy(50))
     print(mac.buy(100))
